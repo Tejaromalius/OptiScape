@@ -44,9 +44,9 @@ export class CuckooSearch extends Algorithm {
       // Lévy step using Mantegna's method
       const sigma = Math.pow(
         (MathUtils.gamma(1 + beta) * Math.sin((Math.PI * beta) / 2)) /
-          (MathUtils.gamma((1 + beta) / 2) *
-            beta *
-            Math.pow(2, (beta - 1) / 2)),
+        (MathUtils.gamma((1 + beta) / 2) *
+          beta *
+          Math.pow(2, (beta - 1) / 2)),
         1 / beta,
       );
       const getLevyStep = () => {
@@ -71,12 +71,12 @@ export class CuckooSearch extends Algorithm {
       else if (nz < -b) nz = -2 * b - nz;
       const nVal = landscape.f(nx, nz);
 
-      // Random choice selection
-      const randIdx = RNG.nextInt(0, this.particles.length);
-      if (nVal < this.particles[randIdx].val) {
-        this.particles[randIdx].x = nx;
-        this.particles[randIdx].z = nz;
-        this.particles[randIdx].val = nVal;
+      // Standard Yang & Deb (2009): Compare against source nest
+      // If the new solution is better, replace the source nest
+      if (nVal < current.val) {
+        current.x = nx;
+        current.z = nz;
+        current.val = nVal;
       }
     }
 
