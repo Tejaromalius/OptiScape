@@ -413,6 +413,7 @@ window.addEventListener('resize', () => {
 
 // --- LOOP ---
 // Initial build
+document.getElementById('inp-seed').value = STATE.seed;
 updateControls();
 switchLandscape('ackley'); // also triggers reset
 
