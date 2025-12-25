@@ -104,12 +104,18 @@ export class GeneticAlgorithm extends Algorithm {
         p.mutationRate = parseFloat(e.target.value);
         dom.querySelector('#val-ga-mut').innerText = p.mutationRate.toFixed(2);
       });
+      domMut.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
+      });
     }
     if (domCross) {
       domCross.addEventListener('input', (e) => {
         p.crossoverRate = parseFloat(e.target.value);
         dom.querySelector('#val-ga-cross').innerText =
           p.crossoverRate.toFixed(2);
+      });
+      domCross.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
       });
     }
   }

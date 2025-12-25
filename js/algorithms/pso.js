@@ -117,17 +117,26 @@ export class PSO extends Algorithm {
         p.w = parseFloat(e.target.value);
         dom.querySelector('#val-pso-w').innerText = p.w.toFixed(2);
       });
+      domW.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
+      });
     }
     if (domC1) {
       domC1.addEventListener('input', (e) => {
         p.c1 = parseFloat(e.target.value);
         dom.querySelector('#val-pso-c1').innerText = p.c1.toFixed(1);
       });
+      domC1.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
+      });
     }
     if (domC2) {
       domC2.addEventListener('input', (e) => {
         p.c2 = parseFloat(e.target.value);
         dom.querySelector('#val-pso-c2').innerText = p.c2.toFixed(1);
+      });
+      domC2.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
       });
     }
   }

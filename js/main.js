@@ -314,6 +314,11 @@ document.addEventListener(EVENTS.UPDATE_PARAMS, () => {
   reset(STATE.keepHistory);
 });
 
+// Algorithm parameter changes trigger new run
+document.addEventListener(EVENTS.RESET, () => {
+  reset(STATE.keepHistory);
+});
+
 // --- STATISTICS TOOLTIP FUNCTIONALITY ---
 const tooltip = document.getElementById('stat-tooltip');
 const statRows = document.querySelectorAll('.stat-clickable');
@@ -368,7 +373,10 @@ if (uiPanel) {
 
 // Hide tooltip when clicking elsewhere
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.stat-clickable') && !e.target.closest('.stat-tooltip')) {
+  if (
+    !e.target.closest('.stat-clickable') &&
+    !e.target.closest('.stat-tooltip')
+  ) {
     tooltip.classList.remove('visible');
     activeStatRow = null;
     if (tooltipTimeout) {

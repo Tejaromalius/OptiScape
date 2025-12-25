@@ -85,11 +85,17 @@ export class SimulatedAnnealing extends Algorithm {
         dom.querySelector('#val-sa-temp').innerText = p.temp;
         // Don't reset currentTemp because it disrupts the run, but next reset will pick it up
       });
+      domTemp.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
+      });
     }
     if (domCool) {
       domCool.addEventListener('input', (e) => {
         p.coolingRate = parseFloat(e.target.value);
         dom.querySelector('#val-sa-cool').innerText = p.coolingRate.toFixed(3);
+      });
+      domCool.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
       });
     }
 

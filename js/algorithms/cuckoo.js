@@ -140,11 +140,17 @@ export class CuckooSearch extends Algorithm {
         p.pa = parseFloat(e.target.value);
         dom.querySelector('#val-pa').innerText = p.pa.toFixed(2);
       });
+      start.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
+      });
     }
     if (levy) {
       levy.addEventListener('input', (e) => {
         p.levyScale = parseFloat(e.target.value);
         dom.querySelector('#val-levy').innerText = p.levyScale.toFixed(1);
+      });
+      levy.addEventListener('change', () => {
+        document.dispatchEvent(new Event(EVENTS.RESET));
       });
     }
   }
