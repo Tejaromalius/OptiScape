@@ -5,7 +5,9 @@ export class TerrainManager {
   constructor(scene) {
     this.scene = scene;
     this.mesh = null;
+    this.heatmapMesh = null; // Separate mesh for heatmap overlay
     this.landscape = null;
+    this._pendingTexture = null;
   }
 
   setLandscape(landscape) {
@@ -14,10 +16,17 @@ export class TerrainManager {
   }
 
   rebuild() {
+    // Cleanup existing meshes
     if (this.mesh) {
       this.scene.remove(this.mesh);
       this.mesh.geometry.dispose();
       this.mesh.material.dispose();
+    }
+    if (this.heatmapMesh) {
+      this.scene.remove(this.heatmapMesh);
+      // Geometry is shared with mesh, so we only dispose material
+      this.heatmapMesh.material.dispose();
+      this.heatmapMesh = null;
     }
 
     const l = this.landscape;
@@ -50,9 +59,7 @@ export class TerrainManager {
       // Color Interpolation
       let t = 0;
       if (l.id === 'rosenbrock' || l.id === 'schwefel') {
-        // Log or different scaling for high range functions
         const safeVal = Math.max(val, 0.0001);
-        // Simple normalized log scale
         if (maxVal === minVal) t = 0;
         else t = (Math.log(safeVal) - Math.log(Math.max(minVal, 0.0001))) / (Math.log(maxVal) - Math.log(Math.max(minVal, 0.0001)));
       } else {
@@ -67,25 +74,57 @@ export class TerrainManager {
     geo.computeVertexNormals();
     geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-    // Material with support for map (heatmap overlay)
+    // 1. Base Mesh (Terrain Colors) - Opaque
     const mat = new THREE.MeshStandardMaterial({
       vertexColors: true,
       roughness: 0.6,
       metalness: 0.1,
       side: THREE.DoubleSide,
-      transparent: true,
-      emissive: new THREE.Color(0xffffff),
-      emissiveIntensity: 0 // Default off
+      transparent: false // Important: Base is opaque
     });
 
     this.mesh = new THREE.Mesh(geo, mat);
     this.mesh.rotation.x = -Math.PI / 2;
     this.scene.add(this.mesh);
+
+    // 2. Overlay Mesh (Heatmap Only) - Transparent
+    const overlayMat = new THREE.MeshBasicMaterial({
+      map: null,
+      transparent: true,
+      opacity: 1, // Will show texture opacity
+      side: THREE.DoubleSide,
+      depthWrite: false, // Prevents z-fighting and ensures overlay behavior
+      color: 0xffffff,
+      alphaTest: 0 // No alpha test needed, use proper blending
+    });
+
+    this.heatmapMesh = new THREE.Mesh(geo, overlayMat); // Re-use geometry
+    this.heatmapMesh.rotation.x = -Math.PI / 2;
+    this.heatmapMesh.position.y = 0.05; // Offset slightly above to sit on top
+    this.heatmapMesh.visible = false;
+    this.scene.add(this.heatmapMesh);
+
+    // Restore pending state
+    if (this._pendingTexture) {
+      this.setHeatmap(this._pendingTexture);
+    }
   }
 
+  /**
+   * Applies or removes heatmap texture to the overlay mesh
+   */
   setHeatmap(texture) {
-    if (!this.mesh) return;
-    this.mesh.material.map = texture;
-    this.mesh.material.needsUpdate = true;
+    this._pendingTexture = texture;
+
+    if (!this.heatmapMesh) return;
+
+    if (texture) {
+      this.heatmapMesh.material.map = texture;
+      this.heatmapMesh.material.needsUpdate = true;
+      this.heatmapMesh.visible = true;
+    } else {
+      this.heatmapMesh.visible = false;
+      this.heatmapMesh.material.map = null;
+    }
   }
 }

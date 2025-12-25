@@ -59,8 +59,12 @@ function switchLandscape(id) {
   STATE.currentLandscape = id;
   terrainMgr.setLandscape(activeLandscape);
   heatmapMgr.reset();
-  heatmapMgr.setEnabled(document.getElementById('chk-heatmap').checked);
-  if (heatmapMgr.enabled) terrainMgr.setHeatmap(heatmapMgr.getTexture());
+  heatmapMgr.setEnabled(document.getElementById('chk-heatmap').checked, activeLandscape);
+  if (heatmapMgr.enabled) {
+    terrainMgr.setHeatmap(heatmapMgr.getTexture());
+  } else {
+    terrainMgr.setHeatmap(null);
+  }
 
   // Update Analogy
   document.getElementById('analogy-text').textContent = activeLandscape.analogy;
@@ -126,8 +130,13 @@ document.getElementById('btn-toggle').addEventListener('click', e => {
 document.getElementById('btn-export').addEventListener('click', () => statsMgr.exportCSV());
 
 document.getElementById('chk-heatmap').addEventListener('change', e => {
-  heatmapMgr.setEnabled(e.target.checked, activeLandscape);
-  terrainMgr.setHeatmap(heatmapMgr.getTexture());
+  const enabled = e.target.checked;
+  heatmapMgr.setEnabled(enabled, activeLandscape);
+  if (enabled) {
+    terrainMgr.setHeatmap(heatmapMgr.getTexture());
+  } else {
+    terrainMgr.setHeatmap(null);
+  }
 });
 
 // Global Params
@@ -170,10 +179,7 @@ function animate(time) {
     popMgr.update(activeAlgorithm.particles, activeLandscape, activeAlgorithm.best);
     heatmapMgr.update(activeAlgorithm.particles, activeLandscape);
 
-    // Ensure terrain manager is using the heatmap texture if enabled
-    if (heatmapMgr.enabled) {
-      terrainMgr.setHeatmap(heatmapMgr.getTexture());
-    }
+
 
     // Update stats
     STATE.genCount++;
