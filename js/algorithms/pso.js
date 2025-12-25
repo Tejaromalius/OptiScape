@@ -43,17 +43,17 @@ export class PSO extends Algorithm {
     for (let i = 0; i < this.particles.length; i++) {
       const part = this.particles[i];
 
-      // Update Velocity
-      const r1 = Math.random();
-      const r2 = Math.random();
+      // Update Velocity (independent random values per dimension)
+      const r1x = Math.random(), r1z = Math.random();
+      const r2x = Math.random(), r2z = Math.random();
 
       part.vx = w * part.vx +
-        c1 * r1 * (part.pBest.x - part.x) +
-        c2 * r2 * (this.globalBest.x - part.x);
+        c1 * r1x * (part.pBest.x - part.x) +
+        c2 * r2x * (this.globalBest.x - part.x);
 
       part.vz = w * part.vz +
-        c1 * r1 * (part.pBest.z - part.z) +
-        c2 * r2 * (this.globalBest.z - part.z);
+        c1 * r1z * (part.pBest.z - part.z) +
+        c2 * r2z * (this.globalBest.z - part.z);
 
       // Update Position
       part.x += part.vx;
