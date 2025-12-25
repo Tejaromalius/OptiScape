@@ -19,7 +19,6 @@ export const STATE = {
     rosenbrock: { a: 1.0, b: 100 },
     rastrigin: { A: 10 },
     sphere: {},
-    schwefel: { scale: 420.9687, freq: 1.0 },
   },
 
   // Dynamic params for algorithms

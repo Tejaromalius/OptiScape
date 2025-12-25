@@ -36,7 +36,7 @@ export class CuckooSearch extends Algorithm {
     // 1. Lévy Flights
     for (let i = 0; i < this.particles.length; i++) {
       const current = this.particles[i];
-      // Adjusted scale to prevent excessive boundary clamping on large domains (e.g. Schwefel)
+      // Adjusted scale to prevent excessive boundary clamping on large domains
       // Previously (b / 3), now (b * 0.01) to keep steps closer to local search with occasional long jumps
       // Uses Dynamic control from STATE
       const jumpScale = STATE.algoParams.cuckoo.levyScale * (b * 0.01);

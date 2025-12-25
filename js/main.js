@@ -13,7 +13,6 @@ import { Ackley } from './landscapes/ackley.js';
 import { Rosenbrock } from './landscapes/rosenbrock.js';
 import { Rastrigin } from './landscapes/rastrigin.js';
 import { Sphere } from './landscapes/sphere.js';
-import { Schwefel } from './landscapes/schwefel.js';
 
 // Algorithms
 import { CuckooSearch } from './algorithms/cuckoo.js';
@@ -34,7 +33,6 @@ const LANDSCAPES = {
   rosenbrock: new Rosenbrock(),
   rastrigin: new Rastrigin(),
   sphere: new Sphere(),
-  schwefel: new Schwefel(),
 };
 
 const ALGORITHMS = {
@@ -106,6 +104,21 @@ function switchAlgorithm(id) {
   if (!ALGORITHMS[id]) return;
   activeAlgorithm = ALGORITHMS[id];
   STATE.currentAlgorithm = id;
+
+  // Adjust population limits based on algorithm type
+  const popSlider = document.getElementById('inp-popsize');
+  if (id === 'sa' || id === 'random') {
+    popSlider.min = '1';
+  } else {
+    // For population-based algos (PSO, GA, Cuckoo), 1 particle is nonsense/broken
+    popSlider.min = '10';
+    if (STATE.popSize < 10) {
+      STATE.popSize = 10;
+      popSlider.value = 10;
+      document.getElementById('val-popsize').innerText = 10;
+    }
+  }
+
   updateControls();
   reset(STATE.keepHistory);
 }

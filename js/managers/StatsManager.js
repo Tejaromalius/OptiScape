@@ -149,7 +149,7 @@ export class StatsManager {
       sqSum += p.val * p.val;
 
       // Assuming 0 is always optimum-ish or close to it for our functions
-      // (Ackley, Rastrigin, Sphere, Rosenbrock(1,1)=0)
+      // (Ackley, Rastrigin, Sphere, etc.)
       // Schwefel is the exception (min is 0 with our offset)
       if (Math.abs(p.val) < epsilon) successCount++;
 
