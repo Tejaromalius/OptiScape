@@ -331,6 +331,17 @@ document.addEventListener('fullscreenchange', () => {
   }
 });
 
+// Helper: Stop, reset, and update UI (wait for Play)
+function stopAndReset() {
+  STATE.isRunning = false;
+  const btn = document.getElementById('btn-toggle');
+  if (btn) {
+    btn.innerText = 'Play';
+    btn.classList.remove('active');
+  }
+  reset(STATE.keepHistory);
+}
+
 // Global Params
 const popSlider = document.getElementById('inp-popsize');
 popSlider.addEventListener('input', (e) => {
@@ -338,7 +349,7 @@ popSlider.addEventListener('input', (e) => {
   document.getElementById('val-popsize').innerText = STATE.popSize;
 });
 popSlider.addEventListener('change', () => {
-  reset(STATE.keepHistory);
+  stopAndReset();
 });
 
 document.getElementById('inp-speed').addEventListener('input', (e) => {
@@ -349,34 +360,40 @@ document.getElementById('inp-speed').addEventListener('input', (e) => {
 document.getElementById('inp-epsilon').addEventListener('input', (e) => {
   STATE.epsilon = parseFloat(e.target.value);
   document.getElementById('val-epsilon').innerText = STATE.epsilon.toFixed(3);
-  // No need to reset(), stats update on next frame
+  // Optional: if epsilon changes result in immediate success/fail, we might want to reset too?
+  // Use 'change' event for that if needed, currently kept live.
+});
+document.getElementById('inp-epsilon').addEventListener('change', () => {
+  stopAndReset();
 });
 
 document.getElementById('inp-seed').addEventListener('change', (e) => {
   STATE.seed = parseInt(e.target.value) || 0;
-  reset(STATE.keepHistory);
+  stopAndReset();
 });
 
 document.getElementById('btn-rand-seed').addEventListener('click', () => {
   STATE.seed = Math.floor(Math.random() * 1000000);
   document.getElementById('inp-seed').value = STATE.seed;
-  reset(STATE.keepHistory);
+  stopAndReset();
 });
 
 document.getElementById('inp-max-gen').addEventListener('change', (e) => {
   STATE.maxGenerations = parseInt(e.target.value) || 0;
+  // If max gen changes, we should probably reset to reflect new constraint from start
+  stopAndReset();
 });
 
 // Helper for dynamic param events (bubbled from modules)
 document.addEventListener(EVENTS.UPDATE_PARAMS, () => {
   terrainMgr.rebuild();
   heatmapMgr.buildMesh(activeLandscape);
-  reset(STATE.keepHistory);
+  stopAndReset();
 });
 
-// Algorithm parameter changes trigger new run
+// Algorithm parameter changes trigger new run (stopped)
 document.addEventListener(EVENTS.RESET, () => {
-  reset(STATE.keepHistory);
+  stopAndReset();
 });
 
 // --- STATISTICS TOOLTIP FUNCTIONALITY ---

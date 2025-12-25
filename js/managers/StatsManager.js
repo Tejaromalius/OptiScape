@@ -91,6 +91,17 @@ export class StatsManager {
       this.runCount = 0;
       this.allRunsHistory = []; // Hard reset clears all history
     } else {
+      // Check if the last dataset is empty (unused). If so, reuse it!
+      if (
+        this.chart.data.datasets.length > 0 &&
+        this.chart.data.datasets[this.chart.data.datasets.length - 1].data
+          .length === 0
+      ) {
+        this.bestFitness = Infinity; // Reset stats
+        this.runHistory = []; // Ensure empty
+        return; // Don't create a new dataset, just wait for data
+      }
+
       // Fade previous runs but keep their color distinction
       if (this.chart.data.datasets.length > 0) {
         const last =
@@ -259,8 +270,8 @@ export class StatsManager {
       // Format algorithm parameters as a readable string
       const algoParams = m.algoParams
         ? Object.entries(m.algoParams)
-            .map(([key, val]) => `${key}=${val}`)
-            .join(';')
+          .map(([key, val]) => `${key}=${val}`)
+          .join(';')
         : 'none';
 
       run.data.forEach((r) => {
