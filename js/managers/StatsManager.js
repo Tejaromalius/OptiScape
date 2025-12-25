@@ -15,10 +15,15 @@ export class StatsManager {
         animation: false,
         interaction: { mode: 'index', intersect: false },
         scales: {
-          x: { display: true, ticks: { color: '#666', maxTicksLimit: 10 } },
+          x: {
+            display: true,
+            ticks: { color: '#666', maxTicksLimit: 10 },
+            title: { display: true, text: 'Generations', color: '#666', font: { size: 11 } }
+          },
           y: {
             grid: { color: '#333' },
-            ticks: { color: '#888', font: { size: 10 } }
+            ticks: { color: '#888', font: { size: 10 } },
+            title: { display: true, text: 'Best Fitness Cost', color: '#888', font: { size: 11 } }
           }
         },
         plugins: {
@@ -40,22 +45,31 @@ export class StatsManager {
       this.chart.data.datasets = [];
       this.runCount = 0;
     } else {
-      // Fade previous
+      // Fade previous runs but keep their color distinction
       if (this.chart.data.datasets.length > 0) {
         const last = this.chart.data.datasets[this.chart.data.datasets.length - 1];
-        last.borderColor = 'rgba(100, 100, 100, 0.5)';
-        last.backgroundColor = 'transparent';
+        // Keep the hue but reduce opacity/width
+        // Assuming borderColor is HSLA or RGBA, we just make it thinner
         last.borderWidth = 1;
+        last.pointRadius = 0;
+        // Optionally fade opacity if it was 1.0
+        // last.borderColor = last.borderColor.replace('1)', '0.4)');
       }
     }
 
     // Start new dataset
     this.runCount++;
+
+    // Golden Angle approximation for distinct colors
+    const hue = (this.runCount * 137.5) % 360;
+    const color = `hsla(${hue}, 80%, 50%, 1)`;
+    const bg = `hsla(${hue}, 80%, 50%, 0.1)`;
+
     const newSet = {
       label: `Run ${this.runCount}`,
       data: [],
-      borderColor: '#00f260',
-      backgroundColor: 'rgba(0, 242, 96, 0.05)',
+      borderColor: color,
+      backgroundColor: bg,
       borderWidth: 2,
       tension: 0.1,
       pointRadius: 0

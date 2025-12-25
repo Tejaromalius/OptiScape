@@ -50,6 +50,8 @@ const statsMgr = new StatsManager();
 const heatmapMgr = new HeatmapManager(scene);
 
 // App State
+// App State
+STATE.keepHistory = false; // Track comparison mode
 let activeLandscape = LANDSCAPES.ackley;
 let activeAlgorithm = ALGORITHMS.cuckoo;
 
@@ -69,14 +71,14 @@ function switchLandscape(id) {
   // Update Analogy
   document.getElementById('analogy-text').textContent = activeLandscape.analogy;
 
-  reset();
+  reset(STATE.keepHistory);
 }
 
 function switchAlgorithm(id) {
   if (!ALGORITHMS[id]) return;
   activeAlgorithm = ALGORITHMS[id];
   STATE.currentAlgorithm = id;
-  reset();
+  reset(STATE.keepHistory);
 }
 
 function updateControls() {
@@ -115,10 +117,21 @@ function reset(keepPrevious = false) {
 document.getElementById('landscape-select').addEventListener('change', e => switchLandscape(e.target.value));
 document.getElementById('algorithm-select').addEventListener('change', e => switchAlgorithm(e.target.value));
 
-document.getElementById('btn-reset').addEventListener('click', () => reset(false));
-document.getElementById('btn-compare').addEventListener('click', () => {
-  // Show a small notification or just reset with history
-  reset(true);
+document.getElementById('btn-reset').addEventListener('click', () => {
+  STATE.keepHistory = false;
+  document.getElementById('btn-compare').innerText = "📊 Compare Current Algorithm";
+  document.getElementById('btn-compare').style.background = ""; // Reset style
+  reset(false);
+});
+
+document.getElementById('btn-compare').addEventListener('click', (e) => {
+  STATE.keepHistory = true;
+  e.target.innerText = "Comparing... (Reset to Exit)";
+  e.target.style.background = "#00f260";
+  e.target.style.color = "#000";
+  // Do NOT called reset(true) here. 
+  // We just enable the mode. The actual reset/save happens when 
+  // the user changes a parameter or clicks Reset manually.
 });
 
 document.getElementById('btn-toggle').addEventListener('click', e => {
@@ -140,10 +153,13 @@ document.getElementById('chk-heatmap').addEventListener('change', e => {
 });
 
 // Global Params
-document.getElementById('inp-popsize').addEventListener('input', e => {
+const popSlider = document.getElementById('inp-popsize');
+popSlider.addEventListener('input', e => {
   STATE.popSize = parseInt(e.target.value);
   document.getElementById('val-popsize').innerText = STATE.popSize;
-  reset();
+});
+popSlider.addEventListener('change', () => {
+  reset(STATE.keepHistory);
 });
 
 document.getElementById('inp-speed').addEventListener('input', e => {
@@ -155,7 +171,7 @@ document.getElementById('inp-speed').addEventListener('input', e => {
 document.addEventListener(EVENTS.UPDATE_PARAMS, () => {
   terrainMgr.rebuild();
   heatmapMgr.buildMesh(activeLandscape);
-  reset();
+  reset(STATE.keepHistory);
 });
 
 // Resize
