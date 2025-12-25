@@ -1,6 +1,5 @@
 import { Algorithm } from './base.js';
 import { STATE, EVENTS } from '../config.js';
-import { MathUtils } from '../utils/math.js';
 import { RNG } from '../utils/random.js';
 
 export class GeneticAlgorithm extends Algorithm {
@@ -69,6 +68,10 @@ export class GeneticAlgorithm extends Algorithm {
     this.particles.forEach((pt) => {
       if (pt.val < this.best.val) this.best = { x: pt.x, z: pt.z, val: pt.val };
     });
+  }
+
+  get description() {
+    return 'Based on Darwin’s theory of evolution. Using operations like selection (survival of the fittest), crossover (recombination of genetic material), and mutation (random changes), it evolves a population towards the optimal solution over several generations.';
   }
 
   tournamentSelect(k) {

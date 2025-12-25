@@ -59,6 +59,10 @@ export class SimulatedAnnealing extends Algorithm {
     if (this.currentTemp < 0.001) this.currentTemp = 0.001; // Floor
   }
 
+  get description() {
+    return 'Mirrors the physical process of heating a material and then slowly lowering the temperature to decrease defects. By allowing occasional "worse" moves when the temperature is high, it can escape local minima, gradually narrowing its focus as it cools down.';
+  }
+
   getControlsHTML() {
     const p = STATE.algoParams.sa;
     return `

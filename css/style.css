@@ -929,3 +929,98 @@ button.active {
     font-size: 0.9rem;
   }
 }
+
+/* ===== ALGORITHM INFO BUTTON ===== */
+.info-icon {
+  all: unset; /* Reset everything */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(79, 172, 254, 0.15);
+  border: 1px solid rgba(79, 172, 254, 0.4);
+  border-radius: 50%;
+  color: #4facfe;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.info-icon:hover {
+  background: rgba(79, 172, 254, 0.3);
+  transform: scale(1.05);
+}
+
+/* ===== ALGORITHM INFO MODAL ===== */
+.algo-info-content {
+  background: #151520;
+  border: 1px solid #333;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.algo-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #1a1a28;
+  border-bottom: 1px solid #333;
+}
+
+.algo-info-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4facfe;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.algo-info-header button {
+  all: unset; /* Reset all inherited button styles */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: #777;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.algo-info-header button:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.algo-info-body {
+  padding: 20px;
+  color: #ccc;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.algo-info-body p {
+  margin: 0;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 480px) {
+  .algo-info-content {
+    width: 95%;
+  }
+  
+  .algo-info-body {
+    padding: 16px;
+    font-size: 0.88rem;
+  }
+}
+
+

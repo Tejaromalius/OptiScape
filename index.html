@@ -66,8 +66,23 @@
           model. Pinch to zoom, drag to rotate!
         </div>
 
-        <!-- Algorithm Selection -->
-        <label>Algorithm:</label>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+          "
+        >
+          <label style="margin: 0">Algorithm:</label>
+          <button
+            id="btn-algo-info"
+            class="info-icon"
+            title="Algorithm Information"
+          >
+            ℹ️
+          </button>
+        </div>
         <select id="algorithm-select">
           <option value="cuckoo">Cuckoo Search</option>
           <option value="pso">Particle Swarm (PSO)</option>
@@ -315,6 +330,18 @@
       </div>
     </div>
 
+    <!-- Algorithm Info Modal -->
+    <div id="algo-info-modal" class="modal">
+      <div class="algo-info-content">
+        <div class="algo-info-header">
+          <h3 id="algo-info-title">Algorithm Name</h3>
+          <button id="algo-info-close" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="algo-info-body">
+          <p id="algo-info-text"></p>
+        </div>
+      </div>
+    </div>
     <!-- Chart Analytics Modal (Full Screen) -->
     <div id="chart-modal" class="modal">
       <div class="modal-content">

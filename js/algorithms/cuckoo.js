@@ -44,9 +44,9 @@ export class CuckooSearch extends Algorithm {
       // Lévy step using Mantegna's method
       const sigma = Math.pow(
         (MathUtils.gamma(1 + beta) * Math.sin((Math.PI * beta) / 2)) /
-        (MathUtils.gamma((1 + beta) / 2) *
-          beta *
-          Math.pow(2, (beta - 1) / 2)),
+          (MathUtils.gamma((1 + beta) / 2) *
+            beta *
+            Math.pow(2, (beta - 1) / 2)),
         1 / beta,
       );
       const getLevyStep = () => {
@@ -114,6 +114,10 @@ export class CuckooSearch extends Algorithm {
     this.particles.forEach((p) => {
       if (p.val < this.best.val) this.best = { x: p.x, z: p.z, val: p.val };
     });
+  }
+
+  get description() {
+    return 'Inspired by the brood parasitism of cuckoo species. It uses Lévy flights (a random walk with power-law jump lengths) to explore the search space, which is more efficient than simple random walks. The algorithm is characterized by its high efficiency in escaping local optima due to occasional "long jumps".';
   }
 
   getControlsHTML() {

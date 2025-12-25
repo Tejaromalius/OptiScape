@@ -37,5 +37,5 @@ export class Landscape {
   }
 
   // Handle parameter updates from DOM
-  updateParams(domElement) { }
+  updateParams(domElement) {}
 }

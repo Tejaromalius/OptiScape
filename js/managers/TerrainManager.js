@@ -99,7 +99,7 @@ export class TerrainManager {
       pos.setZ(i, val * l.hScale + l.visOffset);
 
       let t = 0;
-      if (l.id === 'rosenbrock' || l.id === 'schwefel') {
+      if (l.id === 'rosenbrock') {
         const safeVal = Math.max(val, 0.0001);
         const safeMin = Math.max(minVal, 0.0001);
         const safeMax = Math.max(maxVal, 0.0001);

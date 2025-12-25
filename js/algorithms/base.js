@@ -9,6 +9,10 @@ export class Algorithm {
 
   step(landscape) {}
 
+  get description() {
+    return '';
+  }
+
   getControlsHTML() {
     return '';
   }

@@ -57,10 +57,39 @@ const statsMgr = new StatsManager();
 const heatmapMgr = new HeatmapManager(scene);
 
 // App State
-// App State
 STATE.keepHistory = false; // Track comparison mode
 let activeLandscape = LANDSCAPES.ackley;
 let activeAlgorithm = ALGORITHMS.cuckoo;
+
+// --- ALGORITHM INFO MODAL ---
+const algoInfoModal = document.getElementById('algo-info-modal');
+const algoInfoTitle = document.getElementById('algo-info-title');
+const algoInfoText = document.getElementById('algo-info-text');
+
+function openAlgoInfo() {
+  const algoName = document.querySelector(
+    `#algorithm-select option[value="${STATE.currentAlgorithm}"]`,
+  ).innerText;
+  algoInfoTitle.innerText = algoName;
+  algoInfoText.innerText = activeAlgorithm.description;
+  algoInfoModal.classList.add('active');
+}
+
+function closeAlgoInfo() {
+  algoInfoModal.classList.remove('active');
+}
+
+document
+  .getElementById('btn-algo-info')
+  .addEventListener('click', openAlgoInfo);
+document
+  .getElementById('algo-info-close')
+  .addEventListener('click', closeAlgoInfo);
+
+// Close on backdrop click
+algoInfoModal.addEventListener('click', (e) => {
+  if (e.target === algoInfoModal) closeAlgoInfo();
+});
 
 async function switchLandscape(id) {
   if (!LANDSCAPES[id]) return;

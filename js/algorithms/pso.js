@@ -88,6 +88,10 @@ export class PSO extends Algorithm {
     this.best = this.globalBest;
   }
 
+  get description() {
+    return 'Simulates the social behavior of bird flocking or fish schooling. Each particle adjusts its position based on its own experience (personal best) and the experience of the entire swarm (global best). It is highly effective for large-scale nonlinear optimization problems.';
+  }
+
   getControlsHTML() {
     const p = STATE.algoParams.pso;
     return `

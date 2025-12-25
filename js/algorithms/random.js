@@ -37,6 +37,10 @@ export class RandomSearch extends Algorithm {
     }
   }
 
+  get description() {
+    return 'The simplest possible approach: it repeatedly samples the search space at completely random locations. It serves as a baseline to demonstrate the effectiveness (or lack thereof) of more sophisticated heuristic algorithms.';
+  }
+
   getControlsHTML() {
     return `<div style="font-size:0.8rem;">Just pure luck.</div>`;
   }

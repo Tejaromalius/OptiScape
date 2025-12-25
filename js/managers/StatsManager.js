@@ -357,13 +357,13 @@ export class StatsManager {
       const seed = m.seed || 0;
       const algoParams = m.algoParams
         ? Object.entries(m.algoParams)
-          .map(([key, val]) => `${key}=${val}`)
-          .join(';')
+            .map(([key, val]) => `${key}=${val}`)
+            .join(';')
         : 'none';
       const landParams = m.landParams
         ? Object.entries(m.landParams)
-          .map(([key, val]) => `${key}=${val}`)
-          .join(';')
+            .map(([key, val]) => `${key}=${val}`)
+            .join(';')
         : 'none';
 
       run.data.forEach((r) => {
