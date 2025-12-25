@@ -8,5 +8,8 @@
   },
   "dependencies": {
     "serve": "^14.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4"
   }
 }
