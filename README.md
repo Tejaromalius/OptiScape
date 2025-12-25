@@ -4,6 +4,7 @@ A high-performance, interactive 3D visualization tool for studying metaheuristic
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Technology](https://img.shields.io/badge/tech-Three.js%20%7C%20Chart.js%20%7C%20Vanilla%20JS-yellow)
+![Mobile](https://img.shields.io/badge/mobile-optimized-green.svg)
 
 ## 🚀 Features
 
@@ -37,6 +38,17 @@ Explore agents interacting with complex objective functions, each rendered in in
 * **Statistical Dashboard:** Live metrics for Population Diversity (Std Dev), Average Fitness, and Success Rate.
 * **Export:** Download simulation data as CSV for external analysis.
 * **Comparison Mode:** Run benchmarks to compare the performance of the current algorithm configuration.
+
+### 📱 Mobile Support
+
+* **Fully Responsive:** Optimized for phones, tablets, and desktops with adaptive layouts.
+* **Touch Controls:** Slide-out drawer navigation with touch-optimized controls (48px tap targets).
+* **Gesture Support:** Pinch-to-zoom, drag-to-rotate, and two-finger pan on 3D canvas.
+* **Performance Optimized:** Automatic particle count reduction on mobile devices.
+* **PWA Ready:** Install as a standalone app on iOS and Android.
+* **Orientation Aware:** Adapts to portrait and landscape modes seamlessly.
+
+📖 **[Read the Mobile Guide](MOBILE.md)** for detailed usage instructions.
 
 ---
 

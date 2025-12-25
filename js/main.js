@@ -38,9 +38,10 @@ const ALGORITHMS = {
 };
 
 // --- INIT ---
+const canvasContainer = document.getElementById('canvas-container');
 const scene = createScene();
-const camera = createCamera();
-const renderer = createRenderer('canvas-container');
+const camera = createCamera(canvasContainer);
+const renderer = createRenderer(canvasContainer);
 const controls = createControls(camera, renderer.domElement);
 addLights(scene);
 
@@ -120,6 +121,24 @@ function reset(keepPrevious = false) {
   updateControls();
 }
 
+// --- MOBILE OPTIMIZATIONS ---
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || window.innerWidth <= 768;
+}
+
+// Adjust population size for mobile performance
+if (isMobileDevice() && STATE.popSize > 50) {
+  STATE.popSize = 30; // Reduce default for mobile
+  document.getElementById('inp-popsize').value = 30;
+  document.getElementById('val-popsize').innerText = 30;
+}
+
+// Show mobile instruction banner
+if (isMobileDevice()) {
+  document.getElementById('mobile-instruction').style.display = 'block';
+}
+
 // --- DOM HANDLERS ---
 document.getElementById('landscape-select').addEventListener('change', e => switchLandscape(e.target.value));
 document.getElementById('algorithm-select').addEventListener('change', e => switchAlgorithm(e.target.value));
@@ -193,9 +212,11 @@ document.addEventListener(EVENTS.UPDATE_PARAMS, () => {
 
 // Resize
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const width = canvasContainer.clientWidth;
+  const height = canvasContainer.clientHeight;
+  camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(width, height);
 });
 
 // --- LOOP ---

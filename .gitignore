@@ -1,4 +1,7 @@
 # directories
 .vscode/
 .VSCodeCounter/
+node_modules/
+
 # files
+package-lock.json

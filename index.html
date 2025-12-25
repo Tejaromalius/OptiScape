@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050505">
     <title>Optimization Algorithm Playground</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- Chart.js for analytics -->
@@ -18,84 +21,100 @@
 </head>
 <body>
 
-    <div id="ui-panel">
-        <h1>Optimization Playground</h1>
-        
-        <!-- Algorithm Selection -->
-        <label>Algorithm:</label>
-        <select id="algorithm-select">
-            <option value="cuckoo">Cuckoo Search</option>
-            <option value="pso">Particle Swarm (PSO)</option>
-            <option value="ga">Genetic Algorithm</option>
-            <option value="sa">Simulated Annealing</option>
-            <option value="random">Random Search</option>
-        </select>
 
-        <!-- Landscape Selection -->
-        <label>Landscape:</label>
-        <select id="landscape-select">
-            <option value="ackley">Ackley ("Egg Carton")</option>
-            <option value="rosenbrock">Rosenbrock ("Banana Valley")</option>
-            <option value="rastrigin">Rastrigin ("Needle Field")</option>
-            <option value="sphere">Sphere ("The Bowl")</option>
-            <option value="schwefel">Schwefel ("Deceptive")</option>
-        </select>
-
-        <div id="analogy-box">
-            <strong>Info:</strong> <span id="analogy-text">Loading...</span>
-        </div>
-
-        <!-- Dynamic Controls Container -->
-        <div id="dynamic-controls"></div>
-
-        <!-- Stats Dashboard -->
-        <div class="control-group">
-            <label style="color: #ff9800; font-weight: bold; margin-bottom: 8px;">Statistics</label>
-            <div class="stat-row"><span>Avg Fitness:</span> <span id="stat-avg" class="highlight">0</span></div>
-            <div class="stat-row"><span>Std Dev (Diversity):</span> <span id="stat-std" class="highlight">0</span></div>
-            <div class="stat-row"><span>Success Rate:</span> <span id="stat-succ" class="highlight">0%</span></div>
-            <div class="stat-row"><span>Dispersion:</span> <span id="stat-div" class="highlight">0</span></div>
-            
-            <div style="margin-top:10px; border-top:1px dashed #444; padding-top:8px;">
-                <label style="font-size:0.8rem; color:#aaa;">Success Threshold (ε): <span id="val-epsilon" style="color:#fff">0.1</span></label>
-                <input type="range" id="inp-epsilon" min="0.01" max="1.0" step="0.01" value="0.1" style="height:4px; margin-top:5px;">
-            </div>
-        </div>
-
-        <!-- Global Settings -->
-        <div class="control-group">
-            <label>Population Size: <span id="val-popsize">50</span></label>
-            <input type="range" id="inp-popsize" min="10" max="200" step="10" value="50">
-            
-            <label>Speed: <span id="val-speed">30</span></label>
-            <input type="range" id="inp-speed" min="1" max="60" value="30">
-
-            <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" id="chk-heatmap">
-                <label for="chk-heatmap" style="margin:0; cursor:pointer;">Show Heatmap Overlay</label>
-            </div>
-            <div style="margin-top: 5px; display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" id="chk-autorotate">
-                <label for="chk-autorotate" style="margin:0; cursor:pointer;">Auto-Rotate Camera</label>
-            </div>
-        </div>
-        
-        <div class="btn-container">
-            <button id="btn-toggle">Play</button>
-            <button id="btn-reset">Reset</button>
-        </div>
-        <button id="btn-compare" style="width:100%; margin-bottom: 10px; background: #4facfe; border:none; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);">📊 Compare Current Algorithm</button>
-
-        
-        <button id="btn-export" style="width:100%; margin-bottom: 20px; background: #222; border-color: #666; font-size: 0.8rem;">📥 Export Data (CSV)</button>
-
-        <!-- Analytics Chart -->
-        <div class="chart-container">
-            <canvas id="fitness-chart"></canvas>
+    <!-- Rotate Device Prompt (Portrait Mode Only) -->
+    <div id="rotate-prompt">
+        <div class="rotate-prompt-content">
+            <div class="rotate-icon">📱</div>
+            <h2>Rotate Your Device</h2>
+            <p>For the best experience, please use landscape mode</p>
         </div>
     </div>
 
-    <div id="canvas-container"></div>
+    <div id="app-container">
+        <div id="canvas-container"></div>
+        <div id="ui-panel">
+            <h1>Optimization Playground</h1>
+            
+            <!-- Mobile Instruction -->
+            <div id="mobile-instruction" style="display: none; background: rgba(79, 172, 254, 0.1); border: 1px solid rgba(79, 172, 254, 0.3); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; font-size: 0.8rem; line-height: 1.4; color: rgba(79, 172, 254, 1);">
+                💡 <strong>Tip:</strong> Use touch gestures to rotate and zoom the 3D model. Pinch to zoom, drag to rotate!
+            </div>
+            
+            <!-- Algorithm Selection -->
+            <label>Algorithm:</label>
+            <select id="algorithm-select">
+                <option value="cuckoo">Cuckoo Search</option>
+                <option value="pso">Particle Swarm (PSO)</option>
+                <option value="ga">Genetic Algorithm</option>
+                <option value="sa">Simulated Annealing</option>
+                <option value="random">Random Search</option>
+            </select>
+
+            <!-- Landscape Selection -->
+            <label>Landscape:</label>
+            <select id="landscape-select">
+                <option value="ackley">Ackley ("Egg Carton")</option>
+                <option value="rosenbrock">Rosenbrock ("Banana Valley")</option>
+                <option value="rastrigin">Rastrigin ("Needle Field")</option>
+                <option value="sphere">Sphere ("The Bowl")</option>
+                <option value="schwefel">Schwefel ("Deceptive")</option>
+            </select>
+
+            <div id="analogy-box">
+                <strong>Info:</strong> <span id="analogy-text">Loading...</span>
+            </div>
+
+            <!-- Dynamic Controls Container -->
+            <div id="dynamic-controls"></div>
+
+            <!-- Stats Dashboard -->
+            <div class="control-group">
+                <label style="color: #ff9800; font-weight: bold; margin-bottom: 8px;">Statistics</label>
+                <div class="stat-row"><span>Avg Fitness:</span> <span id="stat-avg" class="highlight">0</span></div>
+                <div class="stat-row"><span>Std Dev (Diversity):</span> <span id="stat-std" class="highlight">0</span></div>
+                <div class="stat-row"><span>Success Rate:</span> <span id="stat-succ" class="highlight">0%</span></div>
+                <div class="stat-row"><span>Dispersion:</span> <span id="stat-div" class="highlight">0</span></div>
+                
+                <div style="margin-top:10px; border-top:1px dashed #444; padding-top:8px;">
+                    <label style="font-size:0.8rem; color:#aaa;">Success Threshold (ε): <span id="val-epsilon" style="color:#fff">0.1</span></label>
+                    <input type="range" id="inp-epsilon" min="0.01" max="1.0" step="0.01" value="0.1" style="height:4px; margin-top:5px;">
+                </div>
+            </div>
+
+            <!-- Global Settings -->
+            <div class="control-group">
+                <label>Population Size: <span id="val-popsize">50</span></label>
+                <input type="range" id="inp-popsize" min="10" max="200" step="10" value="50">
+                
+                <label>Speed: <span id="val-speed">30</span></label>
+                <input type="range" id="inp-speed" min="1" max="60" value="30">
+
+                <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="chk-heatmap">
+                    <label for="chk-heatmap" style="margin:0; cursor:pointer;">Show Heatmap Overlay</label>
+                </div>
+                <div style="margin-top: 5px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="chk-autorotate">
+                    <label for="chk-autorotate" style="margin:0; cursor:pointer;">Auto-Rotate Camera</label>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button id="btn-toggle">Play</button>
+                <button id="btn-reset">Reset</button>
+            </div>
+            <button id="btn-compare" style="width:100%; margin-bottom: 10px; background: #4facfe; border:none; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);">📊 Compare Current Algorithm</button>
+
+            
+            <button id="btn-export" style="width:100%; margin-bottom: 20px; background: #222; border-color: #666; font-size: 0.8rem;">📥 Export Data (CSV)</button>
+
+            <!-- Analytics Chart -->
+            <div class="chart-container">
+                <canvas id="fitness-chart"></canvas>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="js/main.js"></script>
 </body>

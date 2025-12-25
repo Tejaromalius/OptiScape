@@ -8,17 +8,19 @@ export function createScene() {
   return scene;
 }
 
-export function createCamera() {
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+export function createCamera(container) {
+  const width = container ? container.clientWidth : window.innerWidth;
+  const height = container ? container.clientHeight : window.innerHeight;
+  const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
   camera.position.set(6, 7, 6);
   camera.lookAt(0, 0, 0);
   return camera;
 }
 
-export function createRenderer(containerId) {
+export function createRenderer(container) {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.getElementById(containerId).appendChild(renderer.domElement);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
   return renderer;
 }
 
