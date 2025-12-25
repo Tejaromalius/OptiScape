@@ -3,7 +3,7 @@
   "short_name": "CuckooSim",
   "description": "3D Optimization Algorithm Playground and Simulator",
   "start_url": ".",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#050505",
   "theme_color": "#050505",
   "orientation": "any",
