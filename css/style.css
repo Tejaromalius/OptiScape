@@ -572,7 +572,7 @@ button.active {
   }
 
   .chart-container {
-    height: 100px;
+    height: 120px;
   }
 
   .control-group {
@@ -583,6 +583,49 @@ button.active {
   label {
     font-size: 0.85rem;
   }
+}
+
+/* Modern Mini Button */
+.modern-mini-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  background: rgba(40, 40, 40, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modern-mini-btn:hover {
+  background: rgba(79, 172, 254, 0.6);
+  border-color: rgba(79, 172, 254, 0.8);
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+}
+
+.modern-mini-btn:active {
+  transform: scale(0.95);
+}
+
+.chart-container {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 5px;
+  margin-top: 5px;
+  overflow: hidden;
 }
 
 /* ===== ROTATE DEVICE PROMPT ===== */
@@ -761,5 +804,108 @@ button.active {
 
   button {
     border-width: 2px;
+  }
+}
+/* ===== CHART MODAL STYLES ===== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 20000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #111;
+  width: 90%;
+  height: 85%;
+  border-radius: 16px;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 15px 25px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.modal-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.modal-controls button {
+  background: #333;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.modal-controls button:hover {
+  background: #444;
+}
+
+.modal-controls .close-btn {
+  background: #c00;
+  border-color: #f33;
+}
+
+.modal-controls .close-btn:hover {
+  background: #f00;
+}
+
+.modal-body {
+  flex: 1;
+  padding: 20px;
+  position: relative;
+  min-height: 0; /* Important for flex child canvas scaling */
+}
+
+@media screen and (max-width: 768px) {
+  .modal-content {
+    width: 98%;
+    height: 95%;
+  }
+
+  .modal-header {
+    padding: 10px 15px;
+  }
+
+  .modal-controls {
+    gap: 6px;
+  }
+
+  .modal-controls button {
+    padding: 6px 10px;
+    font-size: 0.9rem;
   }
 }

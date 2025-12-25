@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="css/style.css" />
     <!-- Chart.js for analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
     <script type="importmap">
       {
         "imports": {
@@ -287,8 +289,41 @@
         </button>
 
         <!-- Analytics Chart -->
-        <div class="chart-container">
+        <div class="chart-container" style="position: relative">
+          <button
+            id="btn-expand-chart"
+            title="Expand Statistics"
+            class="modern-mini-btn"
+          >
+            <span
+              style="
+                font-size: 1.1rem;
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+              "
+              >⛶</span
+            >
+          </button>
           <canvas id="fitness-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Analytics Modal (Full Screen) -->
+    <div id="chart-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Simulation Analytics</h3>
+          <div class="modal-controls">
+            <button id="modal-zoom-in" title="Zoom In">+</button>
+            <button id="modal-zoom-out" title="Zoom Out">−</button>
+            <button id="modal-reset-zoom" title="Reset Zoom">Reset</button>
+            <button id="modal-close" class="close-btn" title="Close Window">
+              ✕
+            </button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <canvas id="modal-fitness-chart"></canvas>
         </div>
       </div>
     </div>
