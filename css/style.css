@@ -663,6 +663,26 @@ button.active {
   }
 }
 
+@keyframes shake {
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate(-52%, -50%);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate(-48%, -50%);
+  }
+}
+
 /* ===== LANDSCAPE MOBILE OPTIMIZATION ===== */
 @media screen and (max-height: 500px) and (orientation: landscape) {
   #ui-panel {

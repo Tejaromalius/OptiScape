@@ -12,6 +12,7 @@ export const STATE = {
   currentAlgorithm: 'cuckoo',
   currentLandscape: 'ackley',
   seed: Math.floor(Math.random() * 1000000),
+  maxGenerations: 0,
 
   // Dynamic params for landscapes
   landscapeParams: {

@@ -259,8 +259,8 @@ export class StatsManager {
       // Format algorithm parameters as a readable string
       const algoParams = m.algoParams
         ? Object.entries(m.algoParams)
-          .map(([key, val]) => `${key}=${val}`)
-          .join(';')
+            .map(([key, val]) => `${key}=${val}`)
+            .join(';')
         : 'none';
 
       run.data.forEach((r) => {

@@ -163,7 +163,9 @@ function reset(keepPrevious = false) {
     epsilon: STATE.epsilon,
     seed: STATE.seed,
     // Algorithm-specific parameters
-    algoParams: JSON.parse(JSON.stringify(STATE.algoParams[STATE.currentAlgorithm])),
+    algoParams: JSON.parse(
+      JSON.stringify(STATE.algoParams[STATE.currentAlgorithm]),
+    ),
   };
   statsMgr.reset(keepPrevious, meta);
   heatmapMgr.reset();
@@ -217,10 +219,61 @@ document.getElementById('btn-compare').addEventListener('click', (e) => {
 });
 
 document.getElementById('btn-toggle').addEventListener('click', (e) => {
+  // Check if generation limit has been reached
+  if (
+    STATE.maxGenerations > 0 &&
+    STATE.genCount >= STATE.maxGenerations &&
+    !STATE.isRunning
+  ) {
+    // Show warning message
+    showGenerationLimitWarning();
+    return;
+  }
+
   STATE.isRunning = !STATE.isRunning;
   e.target.innerText = STATE.isRunning ? 'Pause' : 'Play';
   e.target.classList.toggle('active');
 });
+
+// Helper function to show generation limit warning
+function showGenerationLimitWarning() {
+  const warning = document.createElement('div');
+  warning.id = 'gen-limit-warning';
+  warning.innerHTML = `
+    <strong>⚠️ Generation Limit Reached</strong><br>
+    Maximum of ${STATE.maxGenerations} generations completed.<br>
+    Reset the simulation or increase the limit to continue.
+  `;
+  warning.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(255, 50, 50, 0.95), rgba(200, 0, 0, 0.95));
+    color: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 100, 100, 0.8);
+    box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4);
+    z-index: 10001;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    animation: shake 0.5s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  `;
+
+  document.body.appendChild(warning);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    warning.style.opacity = '0';
+    warning.style.transform = 'translate(-50%, -50%) scale(0.9)';
+    warning.style.transition = 'all 0.3s ease';
+    setTimeout(() => warning.remove(), 300);
+  }, 3000);
+}
 
 document.getElementById('btn-step').addEventListener('click', () => {
   // Execute one step manually
@@ -308,6 +361,10 @@ document.getElementById('btn-rand-seed').addEventListener('click', () => {
   STATE.seed = Math.floor(Math.random() * 1000000);
   document.getElementById('inp-seed').value = STATE.seed;
   reset(STATE.keepHistory);
+});
+
+document.getElementById('inp-max-gen').addEventListener('change', (e) => {
+  STATE.maxGenerations = parseInt(e.target.value) || 0;
 });
 
 // Helper for dynamic param events (bubbled from modules)
@@ -433,6 +490,14 @@ function animate(time) {
 
     // Update stats
     STATE.genCount++;
+
+    // Check if generation limit reached
+    if (STATE.maxGenerations > 0 && STATE.genCount >= STATE.maxGenerations) {
+      STATE.isRunning = false;
+      document.getElementById('btn-toggle').innerText = 'Play';
+      document.getElementById('btn-toggle').classList.remove('active');
+    }
+
     // document.getElementById('gen-count').innerText = STATE.genCount; // Removed from HTML? Check later.
     // Actually keep getting stats update
     statsMgr.update(
