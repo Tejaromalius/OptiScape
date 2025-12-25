@@ -317,32 +317,63 @@ document.addEventListener(EVENTS.UPDATE_PARAMS, () => {
 // --- STATISTICS TOOLTIP FUNCTIONALITY ---
 const tooltip = document.getElementById('stat-tooltip');
 const statRows = document.querySelectorAll('.stat-clickable');
+let tooltipTimeout = null;
+let activeStatRow = null;
+
+function positionTooltip(row) {
+  if (!row) return;
+
+  const rect = row.getBoundingClientRect();
+  tooltip.style.left = `${rect.left + rect.width / 2}px`;
+  tooltip.style.top = `${rect.top - 10}px`;
+  tooltip.style.transform = 'translate(-50%, -100%)';
+}
 
 statRows.forEach((row) => {
   row.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent event from bubbling to document
+
     const tooltipText = row.getAttribute('data-tooltip');
     if (!tooltipText) return;
 
+    // Clear any existing timeout
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+    }
+
+    activeStatRow = row;
     tooltip.textContent = tooltipText;
     tooltip.classList.add('visible');
 
     // Position tooltip near the clicked element
-    const rect = row.getBoundingClientRect();
-    tooltip.style.left = `${rect.left + rect.width / 2}px`;
-    tooltip.style.top = `${rect.top - 10}px`;
-    tooltip.style.transform = 'translate(-50%, -100%)';
+    positionTooltip(row);
 
-    // Auto-hide after 4 seconds
-    setTimeout(() => {
+    // Auto-hide after 5 seconds
+    tooltipTimeout = setTimeout(() => {
       tooltip.classList.remove('visible');
-    }, 4000);
+      activeStatRow = null;
+    }, 5000);
   });
 });
 
+// Update tooltip position on scroll
+const uiPanel = document.getElementById('ui-panel');
+if (uiPanel) {
+  uiPanel.addEventListener('scroll', () => {
+    if (activeStatRow && tooltip.classList.contains('visible')) {
+      positionTooltip(activeStatRow);
+    }
+  });
+}
+
 // Hide tooltip when clicking elsewhere
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.stat-clickable')) {
+  if (!e.target.closest('.stat-clickable') && !e.target.closest('.stat-tooltip')) {
     tooltip.classList.remove('visible');
+    activeStatRow = null;
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+    }
   }
 });
 
