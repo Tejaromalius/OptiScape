@@ -244,9 +244,9 @@ export class StatsManager {
 
     if (allData.length === 0) return;
 
-    // Enhanced CSV Header
+    // Enhanced CSV Header with algorithm parameters
     let csv =
-      'RunID,Algorithm,Landscape,PopSize,Epsilon,Generation,BestFitness,AvgFitness,StdDev,SuccessRate\n';
+      'RunID,Algorithm,Landscape,PopSize,Epsilon,Seed,AlgoParams,Generation,BestFitness,AvgFitness,StdDev,SuccessRate\n';
 
     allData.forEach((run) => {
       const m = run.meta || {};
@@ -254,9 +254,17 @@ export class StatsManager {
       const land = m.landscape || 'unknown';
       const pop = m.popSize || 0;
       const eps = m.epsilon || 0;
+      const seed = m.seed || 0;
+
+      // Format algorithm parameters as a readable string
+      const algoParams = m.algoParams
+        ? Object.entries(m.algoParams)
+          .map(([key, val]) => `${key}=${val}`)
+          .join(';')
+        : 'none';
 
       run.data.forEach((r) => {
-        csv += `${run.runId},${algo},${land},${pop},${eps},${r.gen},${r.best},${r.avg},${r.stdDev},${r.success}\n`;
+        csv += `${run.runId},${algo},${land},${pop},${eps},${seed},"${algoParams}",${r.gen},${r.best},${r.avg},${r.stdDev},${r.success}\n`;
       });
     });
 

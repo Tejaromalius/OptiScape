@@ -161,6 +161,9 @@ function reset(keepPrevious = false) {
     landscape: STATE.currentLandscape,
     popSize: STATE.popSize,
     epsilon: STATE.epsilon,
+    seed: STATE.seed,
+    // Algorithm-specific parameters
+    algoParams: JSON.parse(JSON.stringify(STATE.algoParams[STATE.currentAlgorithm])),
   };
   statsMgr.reset(keepPrevious, meta);
   heatmapMgr.reset();
