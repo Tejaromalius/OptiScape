@@ -57,8 +57,15 @@ export class CuckooSearch extends Algorithm {
       const stepX = getLevyStep() * jumpScale;
       const stepZ = getLevyStep() * jumpScale;
 
-      let nx = Math.max(-b, Math.min(b, current.x + stepX));
-      let nz = Math.max(-b, Math.min(b, current.z + stepZ));
+      let nx = current.x + stepX;
+      let nz = current.z + stepZ;
+
+      // Reflective boundary handling
+      if (nx > b) nx = 2 * b - nx;
+      else if (nx < -b) nx = -2 * b - nx;
+
+      if (nz > b) nz = 2 * b - nz;
+      else if (nz < -b) nz = -2 * b - nz;
       const nVal = landscape.f(nx, nz);
 
       // Random choice selection
