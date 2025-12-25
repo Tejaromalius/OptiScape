@@ -270,6 +270,8 @@ export class StatsManager {
     });
 
     const N = particles.length;
+    if (N === 0) return;
+
     const avg = sum / N;
     const variance = Math.max(0, sqSum / N - avg * avg);
     const stdDev = Math.sqrt(variance);
