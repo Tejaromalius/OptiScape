@@ -60,3 +60,26 @@ button.active { background: #00f260; border-color: #00f260; color: black; }
     border-top: 1px solid #333;
     padding-top: 10px;
 }
+
+#btn-compare {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+#btn-compare:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+}
+
+#btn-compare:active {
+    transform: translateY(0);
+}
+

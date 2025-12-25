@@ -59,7 +59,8 @@ function switchLandscape(id) {
   STATE.currentLandscape = id;
   terrainMgr.setLandscape(activeLandscape);
   heatmapMgr.reset();
-  heatmapMgr.buildMesh(activeLandscape); // Rebuild heatmap plane
+  heatmapMgr.setEnabled(document.getElementById('chk-heatmap').checked);
+  if (heatmapMgr.enabled) terrainMgr.setHeatmap(heatmapMgr.getTexture());
 
   // Update Analogy
   document.getElementById('analogy-text').textContent = activeLandscape.analogy;
@@ -95,13 +96,12 @@ function updateControls() {
   activeLandscape.updateParams(landDiv);
 }
 
-function reset() {
+function reset(keepPrevious = false) {
   STATE.genCount = 0;
   activeAlgorithm.init(activeLandscape);
   popMgr.init(activeAlgorithm.particles);
 
-  const keepPrev = document.getElementById('chk-history').checked;
-  statsMgr.reset(keepPrev);
+  statsMgr.reset(keepPrevious);
   heatmapMgr.reset();
 
   updateControls();
@@ -111,7 +111,12 @@ function reset() {
 document.getElementById('landscape-select').addEventListener('change', e => switchLandscape(e.target.value));
 document.getElementById('algorithm-select').addEventListener('change', e => switchAlgorithm(e.target.value));
 
-document.getElementById('btn-reset').addEventListener('click', reset);
+document.getElementById('btn-reset').addEventListener('click', () => reset(false));
+document.getElementById('btn-compare').addEventListener('click', () => {
+  // Show a small notification or just reset with history
+  reset(true);
+});
+
 document.getElementById('btn-toggle').addEventListener('click', e => {
   STATE.isRunning = !STATE.isRunning;
   e.target.innerText = STATE.isRunning ? "Pause" : "Play";
@@ -122,6 +127,7 @@ document.getElementById('btn-export').addEventListener('click', () => statsMgr.e
 
 document.getElementById('chk-heatmap').addEventListener('change', e => {
   heatmapMgr.setEnabled(e.target.checked, activeLandscape);
+  terrainMgr.setHeatmap(heatmapMgr.getTexture());
 });
 
 // Global Params
@@ -163,6 +169,11 @@ function animate(time) {
     activeAlgorithm.step(activeLandscape);
     popMgr.update(activeAlgorithm.particles, activeLandscape, activeAlgorithm.best);
     heatmapMgr.update(activeAlgorithm.particles, activeLandscape);
+
+    // Ensure terrain manager is using the heatmap texture if enabled
+    if (heatmapMgr.enabled) {
+      terrainMgr.setHeatmap(heatmapMgr.getTexture());
+    }
 
     // Update stats
     STATE.genCount++;

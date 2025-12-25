@@ -67,12 +67,25 @@ export class TerrainManager {
     geo.computeVertexNormals();
     geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
+    // Material with support for map (heatmap overlay)
     const mat = new THREE.MeshStandardMaterial({
-      vertexColors: true, roughness: 0.6, metalness: 0.1, side: THREE.DoubleSide
+      vertexColors: true,
+      roughness: 0.6,
+      metalness: 0.1,
+      side: THREE.DoubleSide,
+      transparent: true,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0 // Default off
     });
 
     this.mesh = new THREE.Mesh(geo, mat);
     this.mesh.rotation.x = -Math.PI / 2;
     this.scene.add(this.mesh);
+  }
+
+  setHeatmap(texture) {
+    if (!this.mesh) return;
+    this.mesh.material.map = texture;
+    this.mesh.material.needsUpdate = true;
   }
 }

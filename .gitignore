@@ -1,1 +1,4 @@
-.persistent
+# directories
+.vscode/
+
+# files
