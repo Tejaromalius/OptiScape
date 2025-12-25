@@ -21,8 +21,8 @@ export class Rosenbrock extends Landscape {
     return 0.5;
   }
   get colors() {
-    return [0x004400, 0xffff00];
-  } // Green valley, yellow peaks
+    return [0x00ff88, 0xffcc00];
+  } // Bright Mint to Golden Yellow
   get analogy() {
     return 'A long, curved valley. The walls are steep. Easy to find the valley floor, but hard to find the minimum at (a, a²).';
   }

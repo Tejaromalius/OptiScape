@@ -23,8 +23,8 @@ export class Ackley extends Landscape {
     return 0;
   }
   get colors() {
-    return [0x1e3c72, 0xff4b4b];
-  } // Blue to Red
+    return [0x00aaff, 0xff0044];
+  } // Bright Blue to Neon Red
   get analogy() {
     return "Many smooth 'cups' trap solutions. Cuckoos need Lévy Flights to jump out of local cups towards the deep center.";
   }

@@ -21,14 +21,14 @@ export class Schwefel extends Landscape {
     return 500;
   }
   get hScale() {
-    return 0.01;
+    return 0.08;
   }
   get visOffset() {
-    return 0;
+    return 10;
   }
   get colors() {
-    return [0x800000, 0xffffff];
-  } // Maroon to White
+    return [0xff0000, 0xffcccc];
+  } // Crimson to Light Red
   get analogy() {
     return 'A deceptive landscape. The global minimum is far at the edge, deep in a valley, while other deep valleys exist far away.';
   }
@@ -40,5 +40,5 @@ export class Schwefel extends Landscape {
     return `<div style="font-size: 0.8rem; color: #aaa; font-style: italic;">Standard Schwefel function. Bounds +/- 500.</div>`;
   }
 
-  updateParams(dom) {}
+  updateParams(dom) { }
 }

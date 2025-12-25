@@ -62,7 +62,8 @@ body {
 }
 
 /* Show fullscreen button on mobile devices (portrait) AND when in landscape mode with limited height */
-@media screen and (max-width: 768px), screen and (max-height: 500px) and (orientation: landscape) {
+@media screen and (max-width: 768px),
+  screen and (max-height: 500px) and (orientation: landscape) {
   #btn-fullscreen {
     display: flex;
   }

@@ -28,8 +28,8 @@ export class Rastrigin extends Landscape {
     return 0;
   }
   get colors() {
-    return [0x4b0082, 0xffa500];
-  } // Indigo to Orange
+    return [0x9d00ff, 0xffa500];
+  } // Electric Purple to Orange
   get analogy() {
     return 'A field of needles. Hundreds of local minima. Extremely difficult for hill-climbers, requiring significant exploration.';
   }

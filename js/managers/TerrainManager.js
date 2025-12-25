@@ -77,13 +77,13 @@ export class TerrainManager {
     geo.computeVertexNormals();
     geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-    // 1. Base Mesh (Terrain Colors) - Opaque
-    const mat = new THREE.MeshStandardMaterial({
+    // 1. Base Mesh (Terrain Colors) - Responsive and Balanced
+    const mat = new THREE.MeshPhongMaterial({
       vertexColors: true,
-      roughness: 0.6,
-      metalness: 0.1,
+      shininess: 15,
+      specular: 0x222222,
       side: THREE.DoubleSide,
-      transparent: false, // Important: Base is opaque
+      transparent: false,
     });
 
     this.mesh = new THREE.Mesh(geo, mat);

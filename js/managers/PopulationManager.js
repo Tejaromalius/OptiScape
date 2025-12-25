@@ -51,9 +51,32 @@ export class PopulationManager {
     });
   }
 
+  /**
+   * Adjusts the visual scale of particles based on the landscape bounds
+   */
+  scaleAssets(landscape) {
+    const b = landscape.bounds;
+    // Base scale is 1 for bounds ~ 5-10
+    // Scale up linearly but with a floor
+    const s = Math.max(0.5, b / 10);
+
+    // Update the base meshes
+    this.meshes.forEach((m) => {
+      m.scale.set(s, s, s);
+    });
+
+    // Update the beacon
+    this.beacon.scale.set(s, s, s);
+    // Beacon height also needs adjustment
+    this.beacon.geometry.dispose();
+    this.beacon.geometry = new THREE.CylinderGeometry(0, 0.2 * s, 4 * s, 8);
+  }
+
   update(particles, landscape, best) {
     const hScale = landscape.hScale;
     const off = landscape.visOffset;
+    const b = landscape.bounds;
+    const s = Math.max(0.5, b / 10); // Match scaleAssets logic
 
     particles.forEach((p, i) => {
       if (!this.meshes[i]) return;
@@ -61,17 +84,18 @@ export class PopulationManager {
 
       // Calculate new position
       const h = landscape.f(p.x, p.z);
-      const newY = h * hScale + off + 0.1;
+      const newY = h * hScale + off + 0.1 * s; // Offset by scaled radius
 
       // --- BREADCRUMB LOGIC ---
       // Only drop a breadcrumb if the position has changed significantly
       const distSq =
         (mesh.position.x - p.x) ** 2 + (mesh.position.z - p.z) ** 2;
 
-      if (distSq > 0.001) {
+      if (distSq > 0.001 * s * s) {
         // Creates a ghost at the OLD position before moving
         const ghost = new THREE.Mesh(this.ghostGeo, this.ghostMatBase.clone());
         ghost.position.copy(mesh.position);
+        ghost.scale.set(s, s, s); // Apply scale
         this.scene.add(ghost);
 
         // Add to history
@@ -99,7 +123,7 @@ export class PopulationManager {
 
     // Update Beacon
     if (best && best.val !== Infinity) {
-      const by = best.val * hScale + off + 2;
+      const by = best.val * hScale + off + 2 * s;
       this.beacon.position.set(best.x, by, best.z);
       this.beacon.visible = true;
     } else {

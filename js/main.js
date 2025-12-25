@@ -4,6 +4,7 @@ import {
   createRenderer,
   createControls,
   addLights,
+  updateEnvironment,
 } from './scaffold.js';
 import { STATE, CONSTANTS, EVENTS } from './config.js';
 
@@ -78,8 +79,23 @@ function switchLandscape(id) {
     terrainMgr.setHeatmap(null);
   }
 
+  // Adaptive Camera & Fog
+  updateEnvironment(camera, controls, scene, activeLandscape);
+
   // Update Analogy
   document.getElementById('analogy-text').textContent = activeLandscape.analogy;
+
+  // Scale Particles/Assets
+  popMgr.scaleAssets(activeLandscape);
+
+  // Mobile FOV adjustment (often needs wider view in split screen)
+  if (isMobileDevice()) {
+    camera.fov = 75;
+    camera.updateProjectionMatrix();
+  } else {
+    camera.fov = 60;
+    camera.updateProjectionMatrix();
+  }
 
   reset(STATE.keepHistory);
 }
