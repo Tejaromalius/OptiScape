@@ -2,8 +2,15 @@
   "name": "Cuckoo Search Simulator",
   "short_name": "CuckooSim",
   "description": "3D Optimization Algorithm Playground and Simulator",
+  "id": "/cuckoo-search-simulator/",
   "start_url": ".",
-  "display": "fullscreen",
+  "scope": ".",
+  "display": "standalone",
+  "display_override": [
+    "fullscreen",
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#050505",
   "theme_color": "#050505",
   "orientation": "any",
