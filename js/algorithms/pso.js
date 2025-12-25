@@ -1,5 +1,6 @@
 import { Algorithm } from './base.js';
 import { STATE, EVENTS } from '../config.js';
+import { RNG } from '../utils/random.js';
 
 export class PSO extends Algorithm {
   constructor() {
@@ -13,13 +14,13 @@ export class PSO extends Algorithm {
     const b = landscape.bounds;
 
     for (let i = 0; i < STATE.popSize; i++) {
-      const x = (Math.random() * 2 - 1) * b;
-      const z = (Math.random() * 2 - 1) * b;
+      const x = (RNG.next() * 2 - 1) * b;
+      const z = (RNG.next() * 2 - 1) * b;
       const val = landscape.f(x, z);
 
       // Random initial velocity
-      const vx = (Math.random() * 2 - 1) * (b * 0.1);
-      const vz = (Math.random() * 2 - 1) * (b * 0.1);
+      const vx = (RNG.next() * 2 - 1) * (b * 0.1);
+      const vz = (RNG.next() * 2 - 1) * (b * 0.1);
 
       const p = {
         x,
@@ -48,10 +49,10 @@ export class PSO extends Algorithm {
       const part = this.particles[i];
 
       // Update Velocity (independent random values per dimension)
-      const r1x = Math.random(),
-        r1z = Math.random();
-      const r2x = Math.random(),
-        r2z = Math.random();
+      const r1x = RNG.next(),
+        r1z = RNG.next();
+      const r2x = RNG.next(),
+        r2z = RNG.next();
 
       part.vx =
         w * part.vx +

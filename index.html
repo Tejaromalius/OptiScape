@@ -148,6 +148,45 @@
           <label>Speed: <span id="val-speed">30</span></label>
           <input type="range" id="inp-speed" min="1" max="60" value="30" />
 
+          <label>Simulation Seed:</label>
+          <div
+            style="
+              display: flex;
+              gap: 8px;
+              margin-top: 5px;
+              margin-bottom: 15px;
+            "
+          >
+            <input
+              type="number"
+              id="inp-seed"
+              value="12345"
+              style="
+                flex: 1;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid #444;
+                color: #fff;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-family: inherit;
+              "
+            />
+            <button
+              id="btn-rand-seed"
+              title="Randomize Seed"
+              style="
+                width: auto;
+                padding: 4px 10px;
+                margin: 0;
+                font-size: 1.1rem;
+                background: #444;
+                line-height: 1;
+              "
+            >
+              🎲
+            </button>
+          </div>
+
           <div
             style="
               margin-top: 10px;

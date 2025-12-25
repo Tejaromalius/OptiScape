@@ -27,6 +27,7 @@ import { TerrainManager } from './managers/TerrainManager.js';
 import { PopulationManager } from './managers/PopulationManager.js';
 import { StatsManager } from './managers/StatsManager.js';
 import { HeatmapManager } from './managers/HeatmapManager.js';
+import { RNG } from './utils/random.js';
 
 const LANDSCAPES = {
   ackley: new Ackley(),
@@ -136,6 +137,8 @@ function updateControls() {
 
 function reset(keepPrevious = false) {
   STATE.genCount = 0;
+  RNG.setSeed(STATE.seed);
+  RNG.reset();
   activeAlgorithm.init(activeLandscape);
   popMgr.init(activeAlgorithm.particles);
 
@@ -278,6 +281,17 @@ document.getElementById('inp-epsilon').addEventListener('input', (e) => {
   STATE.epsilon = parseFloat(e.target.value);
   document.getElementById('val-epsilon').innerText = STATE.epsilon.toFixed(3);
   // No need to reset(), stats update on next frame
+});
+
+document.getElementById('inp-seed').addEventListener('change', (e) => {
+  STATE.seed = parseInt(e.target.value) || 0;
+  reset(STATE.keepHistory);
+});
+
+document.getElementById('btn-rand-seed').addEventListener('click', () => {
+  STATE.seed = Math.floor(Math.random() * 1000000);
+  document.getElementById('inp-seed').value = STATE.seed;
+  reset(STATE.keepHistory);
 });
 
 // Helper for dynamic param events (bubbled from modules)

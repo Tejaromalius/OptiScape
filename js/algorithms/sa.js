@@ -1,5 +1,6 @@
 import { Algorithm } from './base.js';
 import { STATE, EVENTS } from '../config.js';
+import { RNG } from '../utils/random.js';
 
 export class SimulatedAnnealing extends Algorithm {
   constructor() {
@@ -17,8 +18,8 @@ export class SimulatedAnnealing extends Algorithm {
     // or just one active point and a cloud of history. Let's run PopSize independent Parallel SA chains.
 
     for (let i = 0; i < STATE.popSize; i++) {
-      const x = (Math.random() * 2 - 1) * b;
-      const z = (Math.random() * 2 - 1) * b;
+      const x = (RNG.next() * 2 - 1) * b;
+      const z = (RNG.next() * 2 - 1) * b;
       const val = landscape.f(x, z);
       this.particles.push({ x, z, val, id: i });
       if (val < this.best.val) this.best = { x, z, val };
@@ -34,8 +35,8 @@ export class SimulatedAnnealing extends Algorithm {
 
       // Neighbor generation
       const stepSize = b * 0.1 * (this.currentTemp / p.temp); // Dynamic step size based on temp
-      const nx = curr.x + (Math.random() * 2 - 1) * stepSize;
-      const nz = curr.z + (Math.random() * 2 - 1) * stepSize;
+      const nx = curr.x + (RNG.next() * 2 - 1) * stepSize;
+      const nz = curr.z + (RNG.next() * 2 - 1) * stepSize;
 
       // Clamp (optional in pure SA but needed for constrained)
       const cx = Math.max(-b, Math.min(b, nx));
@@ -44,7 +45,7 @@ export class SimulatedAnnealing extends Algorithm {
 
       // Acceptance
       const delta = nVal - curr.val;
-      if (delta < 0 || Math.random() < Math.exp(-delta / this.currentTemp)) {
+      if (delta < 0 || RNG.next() < Math.exp(-delta / this.currentTemp)) {
         curr.x = cx;
         curr.z = cz;
         curr.val = nVal;

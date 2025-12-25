@@ -1,5 +1,6 @@
 import { Algorithm } from './base.js';
 import { STATE, EVENTS } from '../config.js';
+import { RNG } from '../utils/random.js';
 
 export class RandomSearch extends Algorithm {
   constructor() {
@@ -12,8 +13,8 @@ export class RandomSearch extends Algorithm {
     const b = landscape.bounds;
 
     for (let i = 0; i < STATE.popSize; i++) {
-      const x = (Math.random() * 2 - 1) * b;
-      const z = (Math.random() * 2 - 1) * b;
+      const x = (RNG.next() * 2 - 1) * b;
+      const z = (RNG.next() * 2 - 1) * b;
       const val = landscape.f(x, z);
       this.particles.push({ x, z, val, id: i });
       if (val < this.best.val) this.best = { x, z, val };
@@ -24,8 +25,8 @@ export class RandomSearch extends Algorithm {
     const b = landscape.bounds;
     // Pure random search: just jumpt to new random spot
     for (let i = 0; i < this.particles.length; i++) {
-      const x = (Math.random() * 2 - 1) * b;
-      const z = (Math.random() * 2 - 1) * b;
+      const x = (RNG.next() * 2 - 1) * b;
+      const z = (RNG.next() * 2 - 1) * b;
       const val = landscape.f(x, z);
 
       this.particles[i].x = x;

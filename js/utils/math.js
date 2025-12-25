@@ -1,10 +1,11 @@
+import { RNG } from './random.js';
 export const MathUtils = {
   // Normal distribution random number using Box-Muller transform
   normalRandom: function () {
     let u = 0,
       v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
+    while (u === 0) u = RNG.next();
+    while (v === 0) v = RNG.next();
     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
   },
 
@@ -30,7 +31,7 @@ export const MathUtils = {
   // Weighted random selection
   weightedRandom: function (weights) {
     let sum = weights.reduce((a, b) => a + b, 0);
-    let rand = Math.random() * sum;
+    let rand = RNG.next() * sum;
     for (let i = 0; i < weights.length; i++) {
       rand -= weights[i];
       if (rand < 0) return i;

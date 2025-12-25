@@ -1,6 +1,7 @@
 import { Algorithm } from './base.js';
 import { STATE, CONSTANTS, EVENTS } from '../config.js';
 import { MathUtils } from '../utils/math.js';
+import { RNG } from '../utils/random.js';
 
 export class CuckooSearch extends Algorithm {
   constructor() {
@@ -13,8 +14,8 @@ export class CuckooSearch extends Algorithm {
     const b = landscape.bounds;
 
     for (let i = 0; i < STATE.popSize; i++) {
-      const x = (Math.random() * 2 - 1) * b;
-      const z = (Math.random() * 2 - 1) * b;
+      const x = (RNG.next() * 2 - 1) * b;
+      const z = (RNG.next() * 2 - 1) * b;
       const val = landscape.f(x, z);
       this.particles.push({
         x,
@@ -50,7 +51,7 @@ export class CuckooSearch extends Algorithm {
       const stepMag = u / Math.pow(Math.abs(v), 1 / beta);
 
       // Apply to random direction (isotropic 2D Lévy flight)
-      const angle = Math.random() * 2 * Math.PI;
+      const angle = RNG.next() * 2 * Math.PI;
       const stepX = stepMag * Math.cos(angle) * jumpScale;
       const stepZ = stepMag * Math.sin(angle) * jumpScale;
 
@@ -59,7 +60,7 @@ export class CuckooSearch extends Algorithm {
       const nVal = landscape.f(nx, nz);
 
       // Random choice selection
-      const randIdx = Math.floor(Math.random() * this.particles.length);
+      const randIdx = RNG.nextInt(0, this.particles.length);
       if (nVal < this.particles[randIdx].val) {
         this.particles[randIdx].x = nx;
         this.particles[randIdx].z = nz;
@@ -79,8 +80,8 @@ export class CuckooSearch extends Algorithm {
       // Elitism: don't abandon the absolute best
       if (Math.abs(this.particles[idx].val - this.best.val) < 1e-9) continue;
 
-      const rx = (Math.random() * 2 - 1) * b;
-      const rz = (Math.random() * 2 - 1) * b;
+      const rx = (RNG.next() * 2 - 1) * b;
+      const rz = (RNG.next() * 2 - 1) * b;
       this.particles[idx].x = rx;
       this.particles[idx].z = rz;
       this.particles[idx].val = landscape.f(rx, rz);

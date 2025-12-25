@@ -11,6 +11,7 @@ export const STATE = {
   epsilon: 0.1, // Success threshold
   currentAlgorithm: 'cuckoo',
   currentLandscape: 'ackley',
+  seed: 12345,
 
   // Dynamic params for landscapes
   landscapeParams: {

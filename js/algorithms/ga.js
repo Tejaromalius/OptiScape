@@ -1,6 +1,7 @@
 import { Algorithm } from './base.js';
 import { STATE, EVENTS } from '../config.js';
 import { MathUtils } from '../utils/math.js';
+import { RNG } from '../utils/random.js';
 
 export class GeneticAlgorithm extends Algorithm {
   constructor() {
@@ -13,8 +14,8 @@ export class GeneticAlgorithm extends Algorithm {
     const b = landscape.bounds;
 
     for (let i = 0; i < STATE.popSize; i++) {
-      const x = (Math.random() * 2 - 1) * b;
-      const z = (Math.random() * 2 - 1) * b;
+      const x = (RNG.next() * 2 - 1) * b;
+      const z = (RNG.next() * 2 - 1) * b;
       const val = landscape.f(x, z);
       this.particles.push({ x, z, val, id: i });
       if (val < this.best.val) this.best = { x, z, val };
@@ -38,16 +39,16 @@ export class GeneticAlgorithm extends Algorithm {
       let childX = p1.x;
       let childZ = p1.z;
 
-      if (Math.random() < p.crossoverRate) {
-        const alpha = Math.random();
+      if (RNG.next() < p.crossoverRate) {
+        const alpha = RNG.next();
         childX = alpha * p1.x + (1 - alpha) * p2.x;
         childZ = alpha * p1.z + (1 - alpha) * p2.z;
       }
 
       // Mutation
-      if (Math.random() < p.mutationRate) {
-        childX += (Math.random() * 2 - 1) * (b * 0.1);
-        childZ += (Math.random() * 2 - 1) * (b * 0.1);
+      if (RNG.next() < p.mutationRate) {
+        childX += (RNG.next() * 2 - 1) * (b * 0.1);
+        childZ += (RNG.next() * 2 - 1) * (b * 0.1);
       }
 
       // Clamp
@@ -73,8 +74,7 @@ export class GeneticAlgorithm extends Algorithm {
   tournamentSelect(k) {
     let best = null;
     for (let i = 0; i < k; i++) {
-      const ind =
-        this.particles[Math.floor(Math.random() * this.particles.length)];
+      const ind = this.particles[RNG.nextInt(0, this.particles.length)];
       if (best === null || ind.val < best.val) best = ind;
     }
     return best;
