@@ -201,7 +201,25 @@ document.getElementById('btn-toggle').addEventListener('click', (e) => {
   STATE.isRunning = !STATE.isRunning;
   e.target.innerText = STATE.isRunning ? 'Pause' : 'Play';
   e.target.classList.toggle('active');
-  // Auto-rotation is now manual via checkbox
+});
+
+document.getElementById('btn-step').addEventListener('click', () => {
+  // Execute one step manually
+  activeAlgorithm.step(activeLandscape);
+  popMgr.update(
+    activeAlgorithm.particles,
+    activeLandscape,
+    activeAlgorithm.best,
+  );
+  heatmapMgr.update(activeAlgorithm.particles, activeLandscape);
+
+  // Update stats
+  STATE.genCount++;
+  statsMgr.update(
+    STATE.genCount,
+    activeAlgorithm.particles,
+    activeAlgorithm.best.val,
+  );
 });
 document
   .getElementById('btn-export')
