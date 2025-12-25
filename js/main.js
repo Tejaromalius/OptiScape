@@ -205,6 +205,26 @@ document.getElementById('chk-autorotate').addEventListener('change', (e) => {
   controls.autoRotate = e.target.checked;
 });
 
+document.getElementById('btn-fullscreen').addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+// Update fullscreen icon
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('btn-fullscreen');
+  if (document.fullscreenElement) {
+    btn.textContent = '❐'; // Exit fullscreen icon
+  } else {
+    btn.textContent = '⛶'; // Enter fullscreen icon
+  }
+});
+
 // Global Params
 const popSlider = document.getElementById('inp-popsize');
 popSlider.addEventListener('input', (e) => {

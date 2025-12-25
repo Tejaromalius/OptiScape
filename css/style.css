@@ -34,6 +34,40 @@ body {
   touch-action: pan-y; /* Allow touch gestures for OrbitControls */
 }
 
+#btn-fullscreen {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  background: rgba(30, 40, 60, 0.8);
+  border: 1px solid rgba(79, 172, 254, 0.4);
+  border-radius: 12px;
+  color: rgba(79, 172, 254, 0.9);
+  font-size: 24px;
+  display: none; /* Hidden by default (desktop) */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#btn-fullscreen:active {
+  transform: scale(0.92);
+  background: rgba(79, 172, 254, 0.2);
+}
+
+/* Show fullscreen button on mobile devices (portrait) AND when in landscape mode with limited height */
+@media screen and (max-width: 768px), screen and (max-height: 500px) and (orientation: landscape) {
+  #btn-fullscreen {
+    display: flex;
+  }
+}
+
 /* ===== CONTROL PANEL ===== */
 #ui-panel {
   flex-shrink: 0;
