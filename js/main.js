@@ -790,14 +790,15 @@ const enableAudio = () => {
       updateMusicUI();
     });
   // Remove all listeners after first interaction
-  ['click', 'keydown', 'touchstart'].forEach((evt) =>
-    document.removeEventListener(evt, enableAudio),
+  ['click', 'keydown', 'touchstart', 'touchend', 'pointerdown'].forEach((evt) =>
+    document.removeEventListener(evt, enableAudio, { capture: true }),
   );
 };
 
 // Register interaction listeners to unmute audio
-['click', 'keydown', 'touchstart'].forEach((evt) =>
-  document.addEventListener(evt, enableAudio, { once: true }),
+// Use capture: true to catch events before controls/canvas consume them
+['click', 'keydown', 'touchstart', 'touchend', 'pointerdown'].forEach((evt) =>
+  document.addEventListener(evt, enableAudio, { once: true, capture: true }),
 );
 
 updateMusicUI();
