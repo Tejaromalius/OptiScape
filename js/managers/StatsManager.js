@@ -355,19 +355,23 @@ export class StatsManager {
       const pop = m.popSize || 0;
       const eps = m.epsilon || 0;
       const seed = m.seed || 0;
-      const algoParams = m.algoParams
+
+      // Ensure we extract all available parameters from algoParams object
+      const algoParamsStr = m.algoParams
         ? Object.entries(m.algoParams)
-            .map(([key, val]) => `${key}=${val}`)
-            .join(';')
+          .map(([key, val]) => `${key}=${val}`)
+          .join(';')
         : 'none';
-      const landParams = m.landParams
+
+      const landParamsStr = m.landParams
         ? Object.entries(m.landParams)
-            .map(([key, val]) => `${key}=${val}`)
-            .join(';')
+          .map(([key, val]) => `${key}=${val}`)
+          .join(';')
         : 'none';
 
       run.data.forEach((r) => {
-        csv += `${run.runId},${algo},${land},${pop},${eps},${seed},"${algoParams}","${landParams}",${r.gen},${r.best},${r.avg},${r.stdDev},${r.success}\n`;
+        // Use escaped quotes for parameter strings to handle potential semicolons or commas
+        csv += `${run.runId},${algo},${land},${pop},${eps},${seed},"${algoParamsStr}","${landParamsStr}",${r.gen},${r.best},${r.avg},${r.stdDev},${r.success}\n`;
       });
     });
 

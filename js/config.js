@@ -26,7 +26,14 @@ export const STATE = {
   algoParams: {
     cuckoo: { pa: 0.25, levyScale: 0.2 },
     pso: { w: 0.7, c1: 1.5, c2: 1.5 }, // Inertia, cognitive, social
-    ga: { mutationRate: 0.1, crossoverRate: 0.8 },
+    ga: {
+      mutationRate: 0.1,
+      crossoverRate: 0.8,
+      selectionType: 'roulette',    // 'tournament' | 'roulette' | 'rank' | 'random'
+      crossoverType: 'blend',       // 'blend' | 'single' | 'uniform' | 'sbx'
+      mutationType: 'uniform',      // 'uniform' | 'gaussian' | 'polynomial' | 'swap'
+      sbxEta: 2,                    // Distribution index for SBX crossover
+    },
     sa: { temp: 1000, coolingRate: 0.99 },
     random: {},
   },
